@@ -5,7 +5,7 @@ FROM eclipse-temurin:17-jdk-alpine
 WORKDIR /app
 
 # Copia el archivo JAR desde la máquina local al contenedor
-COPY out/artifacts/API2_jar/API2.jar .
+COPY out/artifacts/API2/spark-hibernate-api.jar .
 
 # Expón el puerto 4567 (puerto predeterminado de Spark)
 EXPOSE 4567
