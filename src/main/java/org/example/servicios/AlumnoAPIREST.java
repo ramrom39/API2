@@ -14,7 +14,7 @@ public class AlumnoAPIREST {
     private Gson gson = new Gson();
 
     public AlumnoAPIREST(AlumnoDAO implementacion) {
-        Spark.port(8080);
+        Spark.port(Integer.parseInt(System.getenv("PORT")));
 
         alumnoDAO = implementacion;
         //endpoint para obtener todos los muebles
