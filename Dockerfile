@@ -11,4 +11,4 @@ COPY out/artifacts/API2/spark-hibernate-api.jar .
 EXPOSE 4567
 
 # Comando para ejecutar la aplicación
-CMD ["sh", "-c", "java -jar API2.jar --server.port=${PORT:-4567}"]
+CMD ["sh", "-c", "java -jar spark-hibernate-api.jar --server.port=${PORT:-4567}"]
