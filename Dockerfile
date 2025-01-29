@@ -1,5 +1,5 @@
 # Usa una imagen base con OpenJDK 17
-FROM eclipse-temurin:23-jdk-alpine
+FROM eclipse-temurin:17-jdk-alpine
 
 # Establece el directorio de trabajo
 WORKDIR /app
@@ -11,4 +11,4 @@ COPY out/artifacts/API2_jar/API2.jar .
 EXPOSE 4567
 
 # Comando para ejecutar la aplicación
-CMD ["java", "-jar", "API2.jar"]
+CMD ["sh", "-c", "java -jar API2.jar --server.port=${PORT:-4567}"]

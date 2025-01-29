@@ -7,17 +7,14 @@ import spark.Spark;
 
 import java.util.List;
 
-// SPARK : microframework PARA CONECTAR LA API CON EL CLIENTE
-
 public class AlumnoAPIREST {
     private AlumnoDAO alumnoDAO;
     private Gson gson = new Gson();
 
     public AlumnoAPIREST(AlumnoDAO implementacion) {
-        Spark.port(Integer.parseInt(System.getenv("PORT")));
+        Spark.port(Integer.parseInt(System.getenv().getOrDefault("PORT", "4567")));
 
         alumnoDAO = implementacion;
-        //endpoint para obtener todos los muebles
 
         Spark.get("/alumnos", (request, response) -> {
             List<Alumno> alumnoList = alumnoDAO.devolverTodos();
@@ -25,10 +22,7 @@ public class AlumnoAPIREST {
             return gson.toJson(alumnoList);
         });
 
-        //endpoint para obtener un mueble por id
-
         Spark.get("/alumnos/id/:id", (request, response) -> {
-
             int id = Integer.parseInt(request.params("id"));
             Alumno alumno = alumnoDAO.buscarporId(id);
             response.type("application/json");
@@ -36,21 +30,15 @@ public class AlumnoAPIREST {
                 return gson.toJson(alumno);
             } else {
                 response.status(404);
-                return "mueble no encontrado";
+                return "{\"error\":\"Alumno no encontrado\"}";
             }
         });
 
-
         Spark.post("/alumnos/crear", (request, response) -> {
             response.type("application/json");
-
             try {
-
                 Alumno nuevoAlumno = gson.fromJson(request.body(), Alumno.class);
-
-
                 Alumno creado = alumnoDAO.create(nuevoAlumno);
-
                 if (creado != null) {
                     response.status(201);
                     return gson.toJson(creado);
@@ -63,43 +51,38 @@ public class AlumnoAPIREST {
                 return "{\"error\":\"Datos inválidos: " + e.getMessage() + "\"}";
             }
         });
+
         Spark.put("/alumnos/update/id/:id", (request, response) -> {
             try {
-                // Obtener el ID del alumno desde los parámetros de la URL
                 int id = Integer.parseInt(request.params("id"));
-
-                // Obtener los datos del alumno desde el cuerpo de la solicitud
                 Alumno cambiarAlumno = gson.fromJson(request.body(), Alumno.class);
-
-                // Establecer el ID del alumno para la actualización
                 cambiarAlumno.setId(id);
-
-                // Llamar al DAO para actualizar el alumno
                 Alumno alumnocambiado = alumnoDAO.actualizar(cambiarAlumno);
 
                 if (alumnocambiado != null) {
-                    response.status(200); // Actualización exitosa
+                    response.status(200);
                     return gson.toJson(alumnocambiado);
                 } else {
-                    response.status(404); // No encontrado
+                    response.status(404);
                     return "{\"error\":\"Alumno no encontrado\"}";
                 }
             } catch (Exception e) {
-                response.status(400); // Solicitud incorrecta
+                response.status(400);
                 return "{\"error\":\"Datos inválidos: " + e.getMessage() + "\"}";
             }
         });
-;
 
         Spark.delete("/alumnos/delete/id/:id", (request, response) -> {
             int id = Integer.parseInt(request.params("id"));
             Alumno alumnoacambiar = alumnoDAO.buscarporId(id);
+            response.type("application/json");
             if (alumnoacambiar != null) {
                 alumnoDAO.eliminar(alumnoacambiar.getId());
-                return "{\"message\":\"Alumno actualizado exitosamente\"}";
-            }else {
+                response.status(200);
+                return "{\"message\":\"Alumno eliminado exitosamente\"}";
+            } else {
                 response.status(404);
-                return  "{\"error\":\"Alumno no encontrado\"}";
+                return "{\"error\":\"Alumno no encontrado\"}";
             }
         });
     }
