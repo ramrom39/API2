@@ -11,4 +11,4 @@ COPY out/artifacts/API2_jar/API2.jar .
 EXPOSE 4567
 
 # Comando para ejecutar la aplicación
-CMD ["java", "-jar", "app.jar"]
+CMD ["java", "-jar", "API2.jar"]
