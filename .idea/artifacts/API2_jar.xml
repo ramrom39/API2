@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="jar" name="API2:jar">
-    <output-path>$PROJECT_DIR$/target</output-path>
+    <output-path>$PROJECT_DIR$/out/artifacts/API2_jar</output-path>
     <root id="archive" name="API2.jar">
       <element id="module-output" name="API2" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/slf4j/slf4j-simple/2.0.9/slf4j-simple-2.0.9.jar" path-in-jar="/" />
